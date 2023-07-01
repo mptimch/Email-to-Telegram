@@ -11,6 +11,8 @@ Getting Telegram token is easy:
 Copy the token value. 
 
 
+There is a jar file in project - you can easy download it and use app
+
 
 You can write me to Telegram @Mptimch with suggestions for improving the program.
 Besides I am looking for a job and will be glad to any offers.
