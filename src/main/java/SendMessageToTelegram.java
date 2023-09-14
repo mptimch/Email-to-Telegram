@@ -25,7 +25,7 @@ public class SendMessageToTelegram extends Thread {
             String finalUrl = "https://api.telegram.org/bot" + telegramToken + "/sendMessage?chat_id=" +
                     chatId + "&text=" + URLEncoder.encode(text, StandardCharsets.UTF_8);
 
-            // Создаем Get запрос
+            // Sending GET query
             URL url = new URL(finalUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");

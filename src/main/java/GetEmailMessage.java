@@ -48,15 +48,15 @@ public class GetEmailMessage implements Callable<String> {
         String messageText = getMessageText(message);
 
         // write a message according to a template that is convenient for us
-//        String textToTelegram = "Дата отправки: " + formattedDate + "\nтема письма: " + subject +
-//                "\nтекст письма: " + messageText;
-        String textToTelegramForMe = "Дата отправки: " + formattedDate + "\nтема письма: " + subject;
+        String fullLetterToTelegram = "Дата отправки: " + formattedDate + "\nтема письма: " + subject +
+                "\nтекст письма: " + messageText;
+        String subjectAndDateToTelegram = "Дата отправки: " + formattedDate + "\nтема письма: " + subject;
 
         // mark message as read
         message.setFlag(Flags.Flag.SEEN, true);
         nowMessage++;
-        logger.info("Забрали с почты сообщение " + textToTelegramForMe);
-        return textToTelegramForMe;
+        logger.info("Забрали с почты сообщение " + fullLetterToTelegram);
+        return fullLetterToTelegram;
     }
 
 
@@ -67,8 +67,8 @@ public class GetEmailMessage implements Callable<String> {
         prop.put("mail.host", host);
         prop.put("mail.debug", "false");
         prop.put("mail.store.protocol", "imaps");
-        prop.put("mail.imaps.ssl.protocols", "TLSv1.2");
-        prop.put("mail.imaps.ssl.ciphersuites", "TLS_RSA_WITH_AES_128_CBC_SHA");
+        prop.put("mail.imaps.ssl.protocols", "TLSv1.3");
+        prop.put("mail.imaps.ssl.ciphersuites", "TLS_AES_128_GCM_SHA256");
         prop.put("mail.imaps.ssl.trust", "*");
         Session session = Session.getInstance(prop);
         return session;
@@ -88,7 +88,6 @@ public class GetEmailMessage implements Callable<String> {
     private String getMessageText(Message message) throws MessagingException, IOException {
         String unformattedText = "";
 
-        // часть писем прилетают в String, часть в Multipart. Поэтому делаем так
         try {
             unformattedText = (String) message.getContent();
         } catch (java.lang.ClassCastException exception) {

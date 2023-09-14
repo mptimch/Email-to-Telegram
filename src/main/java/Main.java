@@ -1,7 +1,11 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -13,13 +17,27 @@ public class Main {
 
     public static void main(String[] args) throws IOException, MessagingException, InterruptedException, ExecutionException {
 
-        // основные настройки для подключения к почте
-        String user = "Your Email login";
-        String password = "Your Email password";
-        String host = "imap.yandex.ru"; // Check for this setting for your Email provider
-        int port = 993;
-        String telegramToken = "Your Email token";
-        String chatId = "Chat ID where you want to get Emails";
+        Properties properties = new Properties();
+        String currentDirectory = System.getProperty("user.dir");
+        FileInputStream fileInputStream = new FileInputStream(currentDirectory + File.separator + "config.properties");
+        properties.load(fileInputStream);
+        fileInputStream.close();
+
+
+        // Getting data from application.properties
+        String user = properties.getProperty("user");
+        String password = properties.getProperty("password");
+        String telegramToken = properties.getProperty("telegramToken");
+        String chatId = properties.getProperty("chatId");
+        int port = Integer.parseInt(properties.getProperty("port"));
+        MailServers mailServers = MailServers.valueOf(properties.getProperty("mail_service").toUpperCase(Locale.ROOT));
+        String host = "";
+
+        switch (mailServers) {
+            case YANDEX -> host = "imap.yandex.ru";
+            case MAIL -> host = "imap.mail.ru";
+            case GMAIL -> host = "imap.gmail.com";
+        }
 
         for (; ; ) {
             String textToTelegram = "";
@@ -29,7 +47,6 @@ public class Main {
                 FutureTask<String> futureTask = new FutureTask<>(callable);
                 new Thread(futureTask).start();
                 textToTelegram = futureTask.get(60, TimeUnit.MINUTES);
-
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
