@@ -11,6 +11,5 @@ Getting Telegram token is easy:
 Copy the token value. 
 
 
-
 You can write me to Telegram @Mptimch with suggestions for improving the program.
 Besides I am looking for a job and will be glad to any offers.
