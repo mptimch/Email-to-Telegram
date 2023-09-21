@@ -1,4 +1,4 @@
-<h1>Email-to-Telegram <br>
+<h1 align="center"> Email-to-Telegram<br </h1>
 Программа отправки писем с e-mail в вашу группу в телеграме </h1>
 <br>
 <h2> Используемые библиотеки и технологии: </h2>
